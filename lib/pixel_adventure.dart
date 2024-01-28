@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
+import 'package:flame/input.dart';
 import 'package:pixel_adventure_flame/enum/level_enum.dart';
 import 'package:pixel_adventure_flame/levels/level.dart';
 
-class PixelAdventure extends FlameGame {
+class PixelAdventure extends FlameGame with HasKeyboardHandlerComponents {
   @override
   late CameraComponent camera = CameraComponent();
 
