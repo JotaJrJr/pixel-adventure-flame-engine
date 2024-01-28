@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:pixel_adventure_flame/enum/player_character_enum.dart';
@@ -25,7 +24,7 @@ class Level extends World {
       switch (spawnPoints.class_) {
         case 'PlayerModel':
           final player = PlayerModel(
-            character: PlayerCharacterEnum.ninjaFrog.name,
+            character: PlayerCharacterEnum.virtualGuy.name,
             position: Vector2(
               spawnPoints.x,
               spawnPoints.y,
