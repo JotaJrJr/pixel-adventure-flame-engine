@@ -12,22 +12,23 @@
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 1.62,
+            "scale": 1.7424,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 312.34567901234567,
-                "y": 183.33333333333331
+                "x": 324.83930211202943,
+                "y": 211.20293847566575
             }
         },
         "level_02.tmx": {
             "expandedObjectLayers": [
-                2
+                2,
+                3
             ],
-            "scale": 1.2648,
-            "selectedLayer": 1,
+            "scale": 2.7227,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 310.7210626185958,
-                "y": 165.24351676154333
+                "x": 335.32890145811143,
+                "y": 188.41591067690158
             }
         },
         "pixel_adventure.tsx": {
