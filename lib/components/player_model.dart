@@ -33,10 +33,10 @@ class PlayerModel extends SpriteAnimationGroupComponent with HasGameRef<PixelAdv
   bool hasJumped = false;
   List<CollisionBlock> collisionBlocks = [];
   PlayerHitbox get hitbox => PlayerHitbox(
-        x: 0,
-        y: 0,
-        width: 32,
-        height: 32,
+        offsetX: 10,
+        offsetY: 4,
+        width: 14,
+        height: 28,
       );
 
   @override
@@ -44,8 +44,8 @@ class PlayerModel extends SpriteAnimationGroupComponent with HasGameRef<PixelAdv
     _loadAllAnimations();
     debugMode = true;
     add(RectangleHitbox(
-      anchor: Anchor.center,
-      position: Vector2(hitbox.x, hitbox.y),
+      // anchor: Anchor.center,
+      position: Vector2(hitbox.offsetX, hitbox.offsetY),
       size: Vector2(hitbox.width, hitbox.height),
     ));
     return super.onLoad();
@@ -140,7 +140,7 @@ class PlayerModel extends SpriteAnimationGroupComponent with HasGameRef<PixelAdv
   void _updatePlayerMovement(double dt) {
     if (hasJumped && isOnGround) _playerJump(dt);
 
-    // if (velocity.y > _gravity) isOnGround = false;     // isso impede o personagem de pular enquanto cai
+    // if (velocity.y > _gravity) isOnGround = false; // isso impede o personagem de pular enquanto cai
 
     velocity.x = horizontalMovement * moveSpeed;
 
@@ -160,11 +160,11 @@ class PlayerModel extends SpriteAnimationGroupComponent with HasGameRef<PixelAdv
         if (checkCollision(this, block)) {
           if (velocity.x > 0) {
             velocity.x = 0;
-            position.x = block.x - hitbox.x - hitbox.width;
+            position.x = block.x - hitbox.offsetX - hitbox.width;
           }
           if (velocity.x < 0) {
             velocity.x = 0;
-            position.x = block.x + block.width + hitbox.width + hitbox.x;
+            position.x = block.x + block.width + hitbox.width + hitbox.offsetX;
             break;
           }
         }
@@ -184,7 +184,7 @@ class PlayerModel extends SpriteAnimationGroupComponent with HasGameRef<PixelAdv
         if (checkCollision(this, block)) {
           if (velocity.y > 0) {
             velocity.y = 0;
-            position.y = block.y - hitbox.height - hitbox.y;
+            position.y = block.y - hitbox.height - hitbox.offsetY;
             isOnGround = true;
             break;
           }
@@ -193,13 +193,13 @@ class PlayerModel extends SpriteAnimationGroupComponent with HasGameRef<PixelAdv
         if (checkCollision(this, block)) {
           if (velocity.y > 0) {
             velocity.y = 0;
-            position.y = block.y - hitbox.height - hitbox.y;
+            position.y = block.y - hitbox.height - hitbox.offsetY;
             isOnGround = true;
             break;
           }
           if (velocity.y < 0) {
             velocity.y = 0;
-            position.y = block.y + block.height - hitbox.y;
+            position.y = block.y + block.height - hitbox.offsetY;
           }
         }
       }
