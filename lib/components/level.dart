@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
+import 'package:pixel_adventure_flame/components/background_tile.dart';
 import 'package:pixel_adventure_flame/components/collision_block.dart';
+import 'package:pixel_adventure_flame/components/fruit.dart';
 import 'package:pixel_adventure_flame/components/player_model.dart';
+import 'package:pixel_adventure_flame/pixel_adventure.dart';
 
-class Level extends World {
+class Level extends World with HasGameRef<PixelAdventure> {
   final String levelName;
   final PlayerModel player;
   late TiledComponent level;
@@ -18,6 +21,40 @@ class Level extends World {
 
     add(level);
 
+    _scrollingBackground();
+
+    _spawningObjects();
+
+    _addCollisions();
+
+    return super.onLoad();
+  }
+
+  void _scrollingBackground() {
+    final backgroundLayer = level.tileMap.getLayer('Background');
+
+    const tileSize = 64;
+
+    final numberOfTilesInY = (game.size.y / tileSize).floor();
+    final numberOfTilesInX = (game.size.x / tileSize).floor();
+
+    if (backgroundLayer != null) {
+      final backgroundColor = backgroundLayer.properties.getValue('BackgroundColor');
+
+      for (double y = 0; y < numberOfTilesInY; y++) {
+        for (double x = 0; x < numberOfTilesInX; x++) {
+          final backgroundTile = BackgroundTile(
+            color: backgroundColor ?? 'Blue',
+            position: Vector2(x * tileSize, y * tileSize),
+          );
+
+          add(backgroundTile);
+        }
+      }
+    }
+  }
+
+  void _spawningObjects() {
     // Esse getLayer é para pegar de acordo com um Object Layer criado no Tile com o nome 'Spawnpoint'
     final spawnPointLayer = level.tileMap.getLayer<ObjectGroup>('Spawnpoint');
 
@@ -32,13 +69,27 @@ class Level extends World {
             );
             add(player);
             break;
+          case 'Fruit':
+            final fruit = Fruit(
+              fruit: spawnPoints.name,
+              position: Vector2(
+                spawnPoints.x,
+                spawnPoints.y,
+              ),
+              size: Vector2(spawnPoints.width, spawnPoints.height),
+            );
+
+            add(fruit);
+
           default:
 
           // E assim o jogador é simplesmente adicionado, de acordo com o class especificado no Tile e assimilado aqui
         }
       }
     }
+  }
 
+  void _addCollisions() {
     final collisionsLayer = level.tileMap.getLayer<ObjectGroup>('Collisions');
 
     if (collisionsLayer != null) {
@@ -76,7 +127,5 @@ class Level extends World {
     }
 
     player.collisionBlocks = collisionBlocks;
-
-    return super.onLoad();
   }
 }

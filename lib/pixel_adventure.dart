@@ -17,7 +17,7 @@ class PixelAdventure extends FlameGame with HasKeyboardHandlerComponents, DragCa
   late CameraComponent camera = CameraComponent();
 
   PlayerModel player = PlayerModel(
-    character: PlayerCharacterEnum.virtualGuy.name,
+    character: PlayerCharacterEnum.maskDude.name,
   );
 
   late JoystickComponent joystick;

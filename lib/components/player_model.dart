@@ -4,7 +4,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 import 'package:pixel_adventure_flame/components/collision_block.dart';
-import 'package:pixel_adventure_flame/components/player_hitbox.dart';
+import 'package:pixel_adventure_flame/components/custom_hitbox.dart';
 import 'package:pixel_adventure_flame/components/utils.dart';
 import 'package:pixel_adventure_flame/enum/player_state_enum.dart';
 import 'package:pixel_adventure_flame/pixel_adventure.dart';
@@ -32,7 +32,7 @@ class PlayerModel extends SpriteAnimationGroupComponent with HasGameRef<PixelAdv
   bool isOnGround = false;
   bool hasJumped = false;
   List<CollisionBlock> collisionBlocks = [];
-  PlayerHitbox get hitbox => PlayerHitbox(
+  CustomHitbox get hitbox => CustomHitbox(
         offsetX: 10,
         offsetY: 4,
         width: 14,
