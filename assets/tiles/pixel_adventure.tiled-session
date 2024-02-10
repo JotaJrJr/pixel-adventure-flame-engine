@@ -3,41 +3,45 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "level_02.tmx",
+    "activeFile": "level_03.tmx",
     "expandedProjectPaths": [
         "."
     ],
     "fileStates": {
         "level_01.tmx": {
             "expandedObjectLayers": [
-                2,
-                3
+                3,
+                2
             ],
             "scale": 1.3196,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 330.4031524704456,
-                "y": 134.88936041224613
+                "x": 321.30948772355254,
+                "y": 234.16186723249467
             }
         },
         "level_02.tmx": {
             "expandedObjectLayers": [
-                2,
-                3
+                3,
+                2
             ],
-            "scale": 1.7675,
-            "selectedLayer": 2,
+            "scale": 1.2278,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 267.04384724186707,
-                "y": 165.7708628005658
+                "x": 319.27023945267956,
+                "y": 184.06906662322854
             }
         },
         "level_03.tmx": {
-            "scale": 1.16078125,
-            "selectedLayer": 0,
+            "expandedObjectLayers": [
+                2,
+                3
+            ],
+            "scale": 1.2179,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 282.56831336653653,
-                "y": 180.91263965540446
+                "x": 335.8239592741605,
+                "y": 199.52377042450118
             }
         },
         "pixel_adventure.tsx": {
@@ -54,13 +58,16 @@
     "openFiles": [
         "pixel_adventure.tsx",
         "level_01.tmx",
-        "level_02.tmx"
+        "level_02.tmx",
+        "level_03.tmx"
     ],
     "project": "pixel_adventure.tiled-project",
+    "property.type": "float",
     "recentFiles": [
         "pixel_adventure.tsx",
         "level_01.tmx",
-        "level_02.tmx"
+        "level_02.tmx",
+        "level_03.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {

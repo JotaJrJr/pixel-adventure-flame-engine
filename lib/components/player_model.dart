@@ -2,14 +2,16 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pixel_adventure_flame/components/collision_block.dart';
 import 'package:pixel_adventure_flame/components/custom_hitbox.dart';
+import 'package:pixel_adventure_flame/components/fruit.dart';
 import 'package:pixel_adventure_flame/components/utils.dart';
 import 'package:pixel_adventure_flame/enum/player_state_enum.dart';
 import 'package:pixel_adventure_flame/pixel_adventure.dart';
 
-class PlayerModel extends SpriteAnimationGroupComponent with HasGameRef<PixelAdventure>, KeyboardHandler {
+class PlayerModel extends SpriteAnimationGroupComponent with HasGameRef<PixelAdventure>, KeyboardHandler, CollisionCallbacks {
   String character;
 
   PlayerModel({
@@ -75,6 +77,13 @@ class PlayerModel extends SpriteAnimationGroupComponent with HasGameRef<PixelAdv
         keysPressed.contains(LogicalKeyboardKey.keyW);
 
     return super.onKeyEvent(event, keysPressed);
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (other is Fruit) other.collidinWithPlayer();
+
+    super.onCollision(intersectionPoints, other);
   }
 
   void _loadAllAnimations() {

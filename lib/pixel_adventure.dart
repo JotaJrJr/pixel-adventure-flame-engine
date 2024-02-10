@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
@@ -10,9 +9,7 @@ import 'package:pixel_adventure_flame/enum/player_character_enum.dart';
 import 'package:pixel_adventure_flame/components/level.dart';
 import 'package:pixel_adventure_flame/components/player_model.dart';
 
-import 'enum/player_direction_enum.dart';
-
-class PixelAdventure extends FlameGame with HasKeyboardHandlerComponents, DragCallbacks {
+class PixelAdventure extends FlameGame with HasKeyboardHandlerComponents, DragCallbacks, HasCollisionDetection {
   @override
   late CameraComponent camera = CameraComponent();
 
@@ -21,6 +18,7 @@ class PixelAdventure extends FlameGame with HasKeyboardHandlerComponents, DragCa
   );
 
   late JoystickComponent joystick;
+  late JoystickComponent jumpJoystick;
   bool showJoystick = true;
 
   @override
@@ -28,7 +26,7 @@ class PixelAdventure extends FlameGame with HasKeyboardHandlerComponents, DragCa
     await images.loadAllImages();
 
     final world = Level(
-      levelName: LevelEnum.levelTwo.levelName,
+      levelName: LevelEnum.levelThree.levelName,
       player: player,
     );
 
@@ -52,6 +50,7 @@ class PixelAdventure extends FlameGame with HasKeyboardHandlerComponents, DragCa
     ]);
 
     showJoystick ? addJoystick() : null;
+    // showJoystick ? addJumpJoystick() : null;
 
     return super.onLoad();
   }
@@ -81,21 +80,36 @@ class PixelAdventure extends FlameGame with HasKeyboardHandlerComponents, DragCa
     }
   }
 
-  void addJoystick() {
-    joystick = JoystickComponent(
+  void addJumpJoystick() {
+    jumpJoystick = JoystickComponent(
       priority: 2,
-      // knob: CircleComponent(
-      //   radius: 15,
-      //   paint: Paint()..color = Color.fromARGB(255, 252, 252, 252),
-      // ),
-
-      knob: RectangleComponent(
-        size: Vector2(30, 30),
-        paint: Paint()..color = Color.fromARGB(255, 214, 44, 44),
+      knob: CircleComponent(
+        radius: 15,
+        paint: Paint()..color = const Color.fromARGB(255, 252, 252, 252),
       ),
       background: CircleComponent(
         radius: 25,
-        paint: Paint()..color = Color.fromARGB(255, 98, 87, 87),
+        paint: Paint()..color = const Color.fromARGB(255, 98, 87, 87),
+      ),
+      margin: const EdgeInsets.only(
+        left: 42,
+        bottom: 32,
+      ),
+    );
+
+    add(jumpJoystick);
+  }
+
+  void addJoystick() {
+    joystick = JoystickComponent(
+      priority: 2,
+      knob: CircleComponent(
+        radius: 15,
+        paint: Paint()..color = const Color.fromARGB(255, 252, 252, 252),
+      ),
+      background: CircleComponent(
+        radius: 25,
+        paint: Paint()..color = const Color.fromARGB(255, 98, 87, 87),
       ),
       margin: const EdgeInsets.only(
         left: 42,
