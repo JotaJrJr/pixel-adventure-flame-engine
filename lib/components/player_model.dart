@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:pixel_adventure_flame/components/collision_block.dart';
 import 'package:pixel_adventure_flame/components/custom_hitbox.dart';
 import 'package:pixel_adventure_flame/components/fruit.dart';
+import 'package:pixel_adventure_flame/components/saw.dart';
 import 'package:pixel_adventure_flame/components/utils.dart';
 import 'package:pixel_adventure_flame/enum/player_state_enum.dart';
 import 'package:pixel_adventure_flame/pixel_adventure.dart';
@@ -23,6 +24,9 @@ class PlayerModel extends SpriteAnimationGroupComponent with HasGameRef<PixelAdv
   late final SpriteAnimation runningAnimation;
   late final SpriteAnimation jumpingAnimation;
   late final SpriteAnimation fallingAnimation;
+  late final SpriteAnimation hitAnimation;
+  late final SpriteAnimation appearingAnimation;
+  late final SpriteAnimation dessapearningAnimation;
 
   final double stepTime = 0.05;
   final double _gravity = 9.8;
@@ -30,9 +34,11 @@ class PlayerModel extends SpriteAnimationGroupComponent with HasGameRef<PixelAdv
   final double _terminalVelocity = 300;
   double horizontalMovement = 0;
   double moveSpeed = 100;
+  Vector2 startingPosition = Vector2.zero();
   Vector2 velocity = Vector2.zero();
   bool isOnGround = false;
   bool hasJumped = false;
+  bool gotHit = false;
   List<CollisionBlock> collisionBlocks = [];
   CustomHitbox get hitbox => CustomHitbox(
         offsetX: 10,
@@ -45,6 +51,8 @@ class PlayerModel extends SpriteAnimationGroupComponent with HasGameRef<PixelAdv
   FutureOr<void> onLoad() {
     _loadAllAnimations();
     debugMode = true;
+
+    startingPosition = Vector2(position.x, position.y);
     add(RectangleHitbox(
       // anchor: Anchor.center,
       position: Vector2(hitbox.offsetX, hitbox.offsetY),
@@ -55,11 +63,18 @@ class PlayerModel extends SpriteAnimationGroupComponent with HasGameRef<PixelAdv
 
   @override
   void update(double dt) {
-    _updatePlayerState();
-    _updatePlayerMovement(dt);
-    _checkHorizontalCollision();
-    _applyGravity(dt);
-    _checkVerticalCollisions();
+    if (!gotHit) {
+      _updatePlayerState();
+      _updatePlayerMovement(dt);
+      _checkHorizontalCollision();
+      _applyGravity(dt);
+      _checkVerticalCollisions();
+    }
+    // _updatePlayerState();
+    // _updatePlayerMovement(dt);
+    // _checkHorizontalCollision();
+    // _applyGravity(dt);
+    // _checkVerticalCollisions();
     super.update(dt);
   }
 
@@ -82,6 +97,8 @@ class PlayerModel extends SpriteAnimationGroupComponent with HasGameRef<PixelAdv
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Fruit) other.collidinWithPlayer();
+
+    if (other is Saw) _respawn();
 
     super.onCollision(intersectionPoints, other);
   }
@@ -107,11 +124,28 @@ class PlayerModel extends SpriteAnimationGroupComponent with HasGameRef<PixelAdv
       amount: 1,
     );
 
+    hitAnimation = _spriteAnimation(
+      state: "Hit",
+      amount: 7,
+    );
+
+    appearingAnimation = _specialSpriteAnimation(
+      state: "Appearing",
+      amount: 7,
+    );
+
+    // dessapearningAnimation = _specialSpriteAnimation(
+    //   state: "Dessapearing",
+    //   amount: 7,
+    // );
+
     animations = {
       PlayerStateEnum.idle: idleAnimation,
       PlayerStateEnum.running: runningAnimation,
       PlayerStateEnum.jumping: jumpingAnimation,
       PlayerStateEnum.falling: fallingAnimation,
+      PlayerStateEnum.hit: hitAnimation,
+      // PlayerStateEnum.appearing: appearingAnimation,
     };
 
     current = PlayerStateEnum.idle;
@@ -124,6 +158,17 @@ class PlayerModel extends SpriteAnimationGroupComponent with HasGameRef<PixelAdv
         amount: amount,
         stepTime: stepTime,
         textureSize: Vector2.all(32),
+      ),
+    );
+  }
+
+  SpriteAnimation _specialSpriteAnimation({required String state, required int amount}) {
+    return SpriteAnimation.fromFrameData(
+      game.images.fromCache("Main Characters/$state (96x96).png"),
+      SpriteAnimationData.sequenced(
+        amount: amount,
+        stepTime: stepTime,
+        textureSize: Vector2.all(96),
       ),
     );
   }
@@ -213,5 +258,27 @@ class PlayerModel extends SpriteAnimationGroupComponent with HasGameRef<PixelAdv
         }
       }
     }
+  }
+
+  void _respawn() {
+    const Duration hitDuration = Duration(milliseconds: 50 * 7); // 50ms * 7 frames
+    const Duration appearingDuration = Duration(milliseconds: 50 * 7);
+    gotHit = true;
+    // position = startingPosition;
+    current = PlayerStateEnum.hit;
+
+    Future.delayed(hitDuration, () {
+      scale.x = 1; // Reset the scale - Se tomar dano, independente da direção, o personagem sempre vai olhar para a direita
+      gotHit = false;
+      position = startingPosition;
+      current = PlayerStateEnum.appearing;
+
+      Future.delayed(appearingDuration, () {
+        position = startingPosition;
+        _updatePlayerState();
+        // position = startingPosition;
+        // current = PlayerStateEnum.idle;
+      });
+    });
   }
 }

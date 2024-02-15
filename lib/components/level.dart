@@ -89,7 +89,7 @@ class Level extends World with HasGameRef<PixelAdventure> {
             final offPos = spawnPoints.properties.getValue('offPos');
             final saw = Saw(
               isVertical: isVertical,
-              offNet: offNeg,
+              offNeg: offNeg,
               offPos: offPos,
               position: Vector2(
                 spawnPoints.x,

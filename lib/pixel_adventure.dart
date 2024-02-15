@@ -111,9 +111,13 @@ class PixelAdventure extends FlameGame with HasKeyboardHandlerComponents, DragCa
         radius: 25,
         paint: Paint()..color = const Color.fromARGB(255, 98, 87, 87),
       ),
-      margin: const EdgeInsets.only(
-        left: 42,
-        bottom: 32,
+      // margin: const EdgeInsets.only(
+      //   right: 42,
+      //   bottom: 32,
+      // ),
+      position: Vector2(
+        size.x + 95,
+        size.y - 20,
       ),
     );
 

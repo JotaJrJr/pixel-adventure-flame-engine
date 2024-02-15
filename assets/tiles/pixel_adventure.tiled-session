@@ -34,14 +34,14 @@
         },
         "level_03.tmx": {
             "expandedObjectLayers": [
-                2,
-                3
+                3,
+                2
             ],
             "scale": 1.2179,
-            "selectedLayer": 1,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 335.8239592741605,
-                "y": 199.52377042450118
+                "x": 348.96132687412756,
+                "y": 246.3256424993842
             }
         },
         "pixel_adventure.tsx": {

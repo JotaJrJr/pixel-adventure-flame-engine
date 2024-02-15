@@ -3,4 +3,7 @@ enum PlayerStateEnum {
   running,
   jumping,
   falling,
+  hit,
+  appearing,
+  desappearing,
 }
