@@ -21,20 +21,19 @@ class PixelAdventure extends FlameGame with HasKeyboardHandlerComponents, DragCa
   late JoystickComponent jumpJoystick;
   bool showJoystick = true;
 
+  List<String> levelNames = [
+    LevelEnum.levelOne.levelName,
+    LevelEnum.levelTwo.levelName,
+    LevelEnum.levelThree.levelName,
+  ];
+
+  int currentLevelIndex = 0;
+
   @override
   FutureOr<void> onLoad() async {
     await images.loadAllImages();
 
-    final world = Level(
-      levelName: LevelEnum.levelThree.levelName,
-      player: player,
-    );
-
-    camera = CameraComponent.withFixedResolution(
-      width: 640,
-      height: 360,
-      world: world,
-    )..priority = 1;
+    _loadLevel();
 
     camera.viewfinder.anchor = Anchor.center;
 
@@ -122,6 +121,28 @@ class PixelAdventure extends FlameGame with HasKeyboardHandlerComponents, DragCa
     );
 
     add(joystick);
+  }
+
+  void loadNextLevel() {
+    if (currentLevelIndex < levelNames.length - 1) {
+      currentLevelIndex++;
+      _loadLevel();
+    } else {
+      currentLevelIndex = 0;
+    }
+  }
+
+  void _loadLevel() {
+    final world = Level(
+      levelName: levelNames[currentLevelIndex],
+      player: player,
+    );
+
+    camera = CameraComponent.withFixedResolution(
+      width: 640,
+      height: 360,
+      world: world,
+    )..priority = 1;
   }
 
   // void addJoystick() {
