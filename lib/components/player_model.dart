@@ -263,19 +263,24 @@ class PlayerModel extends SpriteAnimationGroupComponent with HasGameRef<PixelAdv
   void _respawn() {
     const Duration hitDuration = Duration(milliseconds: 50 * 7); // 50ms * 7 frames
     const Duration appearingDuration = Duration(milliseconds: 50 * 7);
+    const Duration canMoveDuration = Duration(milliseconds: 400);
     gotHit = true;
     // position = startingPosition;
     current = PlayerStateEnum.hit;
 
     Future.delayed(hitDuration, () {
       scale.x = 1; // Reset the scale - Se tomar dano, independente da direção, o personagem sempre vai olhar para a direita
-      gotHit = false;
+
       position = startingPosition;
       current = PlayerStateEnum.appearing;
 
       Future.delayed(appearingDuration, () {
         position = startingPosition;
         _updatePlayerState();
+
+        Future.delayed(canMoveDuration, () {
+          gotHit = false;
+        });
         // position = startingPosition;
         // current = PlayerStateEnum.idle;
       });
